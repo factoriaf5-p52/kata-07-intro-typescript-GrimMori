@@ -19,18 +19,23 @@ let exampleTarget = 2;
 interface Result {
     periodLength: number;
     trainingDays: number;
+    target: number;
     success: boolean;
     rating: number;
     ratingDescription: string;
-    target: number;
     average: number;
 }
 
 const calculateExercises = (hoursPerDay: number[], target: number) => {
+    let period = hoursPerDay.length;
+    let days = hoursPerDay.filter((hours)=>{
+        return hours > 0;
+    }).length;
     let success;
     let rating;
     let description;
-    if(hoursPerDay.reduce((a, b) => (a + b) / hoursPerDay.length) >= target){
+
+    if(hoursPerDay.reduce((a, b) => a + b) / hoursPerDay.length >= target){
         success = true;
         rating = 10;
         description = "good";
@@ -41,17 +46,15 @@ const calculateExercises = (hoursPerDay: number[], target: number) => {
     }
 
     const semana: Result = {
-        periodLength: hoursPerDay.length,
-        trainingDays: hoursPerDay.filter((hours)=>{
-            return hours > 0;
-        }).length,
-        target: target,
+        periodLength: period,
+        trainingDays: days,
         success: success,
         rating: rating,
         ratingDescription: description,
-        average: hoursPerDay.reduce((a, b) => (a + b) / hoursPerDay.length)
+        target: target,
+        average: hoursPerDay.reduce((a, b) => a + b) / hoursPerDay.length
         }
+    console.log(hoursPerDay.length)
     return semana;
 }
-
 console.log(calculateExercises(exampleWeek, exampleTarget))
